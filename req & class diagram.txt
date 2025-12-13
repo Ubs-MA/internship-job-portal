@@ -39,35 +39,41 @@ Application
 
 
 
-
-+----------------+       1      1 +-----------------+
-|     User       | ---------------- |    Profile      |
-|----------------|                 |-----------------|
-| id (PK)        |                 | user (FK, OneToOne)|
-| username       |                 | role ('student'/'company') |
-| password       |                 | email (optional)  |
-| ...            |                 | university (blank=True) |
-+----------------+                 | skills (blank=True)     |
-                                   | cv (FileField, optional)|
-                                   +-----------------+
++----------------+                       +-----------------+
+|     User       |                       |    Profile      |
+|----------------| 1                 1   |-----------------|
+| - id (PK)      |-----------------------| - user (OneToOne)|
+| - username     |                       | - role          |
+| - password     |                       | - email         |
+| - email (built-in)                  | - university    |
+|                |                       | - skills        |
++----------------+                       | - cv            |
+                                        +-----------------+
+                                        | + get_role_display(): string   |
+                                        | + has_cv(): bool               |
+                                        +--------------------------------+
 
           ^                                   ^
           |                                   |
-          |  (role = 'company')                |  (role = 'student')
+          |                                   |
    +------+------+                      +-----+------+
    |             |                      |            |
    |             |                      |            |
 +--+------+   +--+------+         +-----+------+   +-------------+
 | Company |   | Student |         | JobPosting |   | Application |
-| (view)  |   | (view)   |         |------------|   |-------------|
-+---------+   +---------+         | id (PK)    |   | id (PK)     |
-                                  | company (FK → User) | | student (FK → User) |
-                                  | title      |   | job (FK → JobPosting) |
-                                  | description|   | applied_at          |
-                                  | location   |   +-------------+
-                                  | job_type   |
-                                  | created_at |
+| (role)  |   | (role)   |         |------------|   |-------------|
++---------+   +---------+         | - id (PK)  |   | - id (PK)   |
+                                  | - company  |   | - student   |
+                                  | - title    |   | - job       |
+                                  | - description| | - applied_at|
+                                  | - location |   +-------------+
+                                  | - job_type |   | + __str__(): string     |
+                                  | - created_at|   +-------------------------+
                                   +------------+
+                                  | + __str__(): string            |
+                                  | + get_applicant_count(): int   |
+                                  | + get_job_type_display(): string|
+                                  +--------------------------------+
 
 Key Relationships:
 - User 1 --- 1 Profile (OneToOneField)
