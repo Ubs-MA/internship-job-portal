@@ -1,0 +1,27 @@
+<form method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+    
+    <label><strong>Email (optional):</strong></label><br>
+    <input type="email" name="email" value="{{ profile.email }}" placeholder="your.email@example.com" style="width:100%; padding:8px;"><br><br>
+    
+    {% if user.profile.role == 'student' %}
+        <label>University:</label><br>
+        <input type="text" name="university" value="{{ profile.university }}" style="width:100%; padding:8px;"><br><br>
+        
+        <label>Skills (comma separated):</label><br>
+        <textarea name="skills" rows="4" style="width:100%; padding:8px;">{{ profile.skills }}</textarea><br><br>
+        
+        <label>Upload/Update CV:</label><br>
+        <input type="file" name="cv"><br><br>
+        
+        {% if profile.cv %}
+            <p>Current CV: <a href="{{ profile.cv.url }}" target="_blank">Download Current CV</a></p>
+        {% endif %}
+    {% else %}
+        <p><em>Company users can update contact email above.</em></p>
+    {% endif %}
+    
+    <button type="submit" style="padding:12px 24px; font-size:18px; background:#3498db; color:white; border:none;">
+        Save Changes
+    </button>
+</form>

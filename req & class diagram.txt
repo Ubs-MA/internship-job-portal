@@ -1,0 +1,77 @@
+asgiref==3.11.0
+Django==6.0
+pillow==12.0.0
+sqlparse==0.5.4
+tzdata==2025.2
+
+
+
+
+User
+├── id
+├── username
+├── password
+└── profile → Profile (OneToOne)
+
+Profile
+├── user (FK)
+├── role (student/company)
+├── email (EmailField, optional)
+├── university (optional)
+├── skills (optional)
+└── cv (FileField, optional)
+
+JobPosting
+├── id
+├── company → User (FK)
+├── title
+├── description
+├── location
+├── job_type
+└── created_at
+
+Application
+├── id
+├── student → User (FK)
+├── job → JobPosting (FK)
+└── applied_at
+
+
+
+
+
++----------------+       1      1 +-----------------+
+|     User       | ---------------- |    Profile      |
+|----------------|                 |-----------------|
+| id (PK)        |                 | user (FK, OneToOne)|
+| username       |                 | role ('student'/'company') |
+| password       |                 | email (optional)  |
+| ...            |                 | university (blank=True) |
++----------------+                 | skills (blank=True)     |
+                                   | cv (FileField, optional)|
+                                   +-----------------+
+
+          ^                                   ^
+          |                                   |
+          |  (role = 'company')                |  (role = 'student')
+   +------+------+                      +-----+------+
+   |             |                      |            |
+   |             |                      |            |
++--+------+   +--+------+         +-----+------+   +-------------+
+| Company |   | Student |         | JobPosting |   | Application |
+| (view)  |   | (view)   |         |------------|   |-------------|
++---------+   +---------+         | id (PK)    |   | id (PK)     |
+                                  | company (FK → User) | | student (FK → User) |
+                                  | title      |   | job (FK → JobPosting) |
+                                  | description|   | applied_at          |
+                                  | location   |   +-------------+
+                                  | job_type   |
+                                  | created_at |
+                                  +------------+
+
+Key Relationships:
+- User 1 --- 1 Profile (OneToOneField)
+- User (role='company') 1 --- * JobPosting
+- User (role='student') * --- * Application
+- JobPosting 1 --- * Application
+- Unique constraint on Application (student + job) → no duplicates

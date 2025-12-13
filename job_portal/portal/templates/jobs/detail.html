@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>{{ job.title }} - Job Details</title>
+</head>
+<body>
+    <h1>{{ job.title }}</h1>
+    
+    <p><strong>Company:</strong> {{ job.company.username }}</p>
+    <p><strong>Type:</strong> {{ job.get_job_type_display }}</p>
+    <p><strong>Location:</strong> {{ job.location }}</p>
+    <p><strong>Description:</strong><br>{{ job.description|linebreaks }}</p>
+    <small>Posted on: {{ job.created_at|date:"d M Y" }}</small>
+    
+    <hr>
+    
+    <a href="{% url 'job_list' %}">← Back to Jobs</a> | 
+    <a href="{% url 'home' %}">Home</a>
+    
+    {% if user.is_authenticated %}
+        {% if user.profile.role == 'student' %}
+            <hr>
+            {% if already_applied %}
+                <p style="color: green; font-weight: bold;">✓ You have already applied to this job!</p>
+            {% else %}
+                <form method="post" action="{% url 'apply_job' job.id %}">
+                    {% csrf_token %}
+                    <button type="submit" style="padding: 15px 30px; font-size: 18px; background: #27ae60; color: white; border: none; border-radius: 5px;">
+                        Apply Now
+                    </button>
+                </form>
+            {% endif %}
+        {% elif user.profile.role == 'company' %}
+            <p><em>(You posted this job)</em></p>
+        {% endif %}
+    {% else %}
+        <hr>
+        <p><a href="{% url 'login' %}">Login as Student to Apply</a></p>
+    {% endif %}
+</body>
+</html>

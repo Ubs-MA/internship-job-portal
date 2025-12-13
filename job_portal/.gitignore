@@ -1,0 +1,33 @@
+# Python/Django
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+env/
+venv/
+myenv/
+*.env
+
+# Database
+db.sqlite3
+
+# Media uploads (CVs, etc.)
+media/
+
+# Logs
+*.log
+local_settings.py
+
+# IDE/Editor
+.idea/
+.vscode/
+*.sublime-project
+*.sublime-workspace
+
+# Migrations (DO NOT ignore — they are needed!)
+# But ignore any custom local ones if needed
+
+# Other
+.DS_Store
+Thumbs.db

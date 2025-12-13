@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Job Listings</title>
+</head>
+<body>
+    <h1>Available Jobs & Internships</h1>
+    
+    <p><a href="{% url 'home' %}">← Back to Home</a></p>
+    <hr>
+
+    {% if jobs %}
+        {% for job in jobs %}
+            <div style="border: 1px solid #ccc; padding: 15px; margin: 15px 0; border-radius: 8px;">
+                <h2><a href="{% url 'job_detail' job.id %}">{{ job.title }}</a></h2>
+                <p><strong>Company:</strong> {{ job.company.username }}</p>
+                <p><strong>Type:</strong> {{ job.get_job_type_display }}</p>
+                <p><strong>Location:</strong> {{ job.location }}</p>
+                <p>{{ job.description|truncatewords:50 }}</p>
+                <small>Posted on: {{ job.created_at|date:"d M Y" }}</small>
+            </div>
+        {% endfor %}
+    {% else %}
+        <p>No jobs available yet. Be the first company to post one!</p>
+    {% endif %}
+</body>
+</html>

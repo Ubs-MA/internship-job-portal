@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>My Profile - {{ user.username }}</title>
+</head>
+<body>
+    <h1>My Profile</h1>
+    
+    <p><strong>Username:</strong> {{ user.username }}</p>
+    
+    {% if profile.email %}
+        <p><strong>Email:</strong> {{ profile.email }}</p>
+    {% else %}
+        <p><strong>Email:</strong> Not provided (optional)</p>
+    {% endif %}
+    
+    <p><strong>Role:</strong> {{ profile.get_role_display }}</p>
+    
+    {% if user.profile.role == 'student' %}
+        <p><strong>University:</strong> {{ profile.university|default:"Not set" }}</p>
+        <p><strong>Skills:</strong> {{ profile.skills|default:"Not set"|linebreaks }}</p>
+        
+        {% if profile.cv %}
+            <p><strong>CV:</strong> <a href="{{ profile.cv.url }}" target="_blank">Download CV</a></p>
+        {% else %}
+            <p><strong>CV:</strong> Not uploaded yet</p>
+        {% endif %}
+        
+        <hr>
+        <a href="{% url 'edit_profile' %}"><strong>Edit Profile & Upload CV</strong></a>
+    {% else %}
+        <p><em>Company profiles are managed via your account settings.</em></p>
+        <hr>
+        <a href="{% url 'edit_profile' %}"><strong>Update Contact Email</strong></a>
+    {% endif %}
+    
+    <hr>
+    <a href="{% url 'dashboard' %}">← Back to Dashboard</a> | 
+    <a href="{% url 'home' %}">Home</a>
+</body>
+</html>

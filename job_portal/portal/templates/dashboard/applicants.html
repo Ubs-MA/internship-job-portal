@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+<head><title>Applicants for {{ job.title }}</title></head>
+<body>
+    <h1>Applicants for: {{ job.title }}</h1>
+    <p><a href="{% url 'dashboard' %}">← Back to Dashboard</a></p>
+    <hr>
+
+    {% if applicants %}
+        {% for app in applicants %}
+            <div style="border:1px solid #aaa; padding:15px; margin:10px 0; background:#f9f9f9;">
+                <strong>Student:</strong> {{ app.student.username }}<br>
+                <strong>Applied on:</strong> {{ app.applied_at|date:"d M Y" }}<br>
+                {% if app.student.profile.cv %}
+                    <a href="{{ app.student.profile.cv.url }}" target="_blank">Download CV</a>
+                {% else %}
+                    <em>No CV uploaded</em>
+                {% endif %}
+            </div>
+        {% endfor %}
+    {% else %}
+        <p>No applicants yet.</p>
+    {% endif %}
+</body>
+</html>

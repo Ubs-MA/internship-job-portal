@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+<head><title>Home</title></head>
+<body>
+    <h1>Welcome to Internship & Job Portal</h1>
+
+    {% if user.is_authenticated %}
+        <p>Hello, {{ user.username }}!
+            <form style="display:inline;" method="post" action="{% url 'logout' %}">
+                {% csrf_token %}
+                <button type="submit" style="background:none;border:none;color:blue;cursor:pointer;">Logout</button>
+            </form>
+        </p>
+
+        <p><a href="{% url 'dashboard' %}"><strong>My Dashboard</strong></a></p>
+
+        <p><a href="{% url 'view_profile' %}">My Profile</a> | 
+   <a href="{% url 'dashboard' %}"><strong>My Dashboard</strong></a></p>
+
+        {% if user.profile.role == 'company' %}
+            <p><a href="{% url 'post_job' %}"><strong>Post a New Job</strong></a></p>
+        {% endif %}
+
+        <p><a href="{% url 'job_list' %}">Browse All Jobs</a></p>
+    {% else %}
+        <p><a href="{% url 'login' %}">Login</a> | <a href="{% url 'signup' %}">Sign Up</a></p>
+    {% endif %}
+</body>
+</html>

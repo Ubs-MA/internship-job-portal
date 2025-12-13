@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Post a New Job</title>
+</head>
+<body>
+    <h1>Post a New Job/Internship</h1>
+
+    <p><a href="{% url 'job_list' %}">← Back to Job List</a> | 
+       <a href="{% url 'home' %}">Home</a></p>
+    <hr>
+
+    <form method="post">
+        {% csrf_token %}
+        
+        <label><strong>Title:</strong></label><br>
+        <input type="text" name="title" required style="width: 100%; padding: 8px; font-size: 16px;"><br><br>
+        
+        <label><strong>Description:</strong></label><br>
+        <textarea name="description" rows="10" required style="width: 100%; padding: 8px; font-size: 16px;"></textarea><br><br>
+        
+        <label><strong>Location:</strong></label><br>
+        <input type="text" name="location" required style="width: 60%; padding: 8px; font-size: 16px;"><br><br>
+        
+        <label><strong>Type:</strong></label><br>
+        <select name="job_type" style="padding: 8px; font-size: 16px;">
+            <option value="job">Full-time Job</option>
+            <option value="internship">Internship</option>
+        </select><br><br>
+        
+        <button type="submit" style="padding: 12px 24px; font-size: 18px; background: #27ae60; color: white; border: none; border-radius: 4px; cursor: pointer;">
+            Post Job
+        </button>
+    </form>
+</body>
+</html>

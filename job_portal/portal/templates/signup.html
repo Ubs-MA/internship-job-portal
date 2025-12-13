@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Sign Up</title>
+</head>
+<body>
+    <h2>Sign Up</h2>
+    
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        
+        <label><strong>Account Type:</strong></label><br>
+        <input type="radio" name="role" value="student" required> Student<br>
+        <input type="radio" name="role" value="company" required> Company<br><br>
+        
+        <button type="submit">Sign Up</button>
+    </form>
+    
+    <p>Already have an account? <a href="{% url 'login' %}">Login</a></p>
+    <p><a href="{% url 'home' %}">← Back to Home</a></p>
+</body>
+</html>

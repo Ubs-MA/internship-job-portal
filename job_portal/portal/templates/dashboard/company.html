@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Company Dashboard</title>
+  </head>
+  <body>
+    <h1>Company Dashboard - {{ user.username }}</h1>
+
+    <p>
+      <a href="{% url 'post_job' %}">Post New Job</a> |
+      <a href="{% url 'job_list' %}">View All Jobs</a> |
+      <a href="{% url 'home' %}">Home</a>
+    </p>
+
+    <hr />
+    
+    <p>
+      <a href="{% url 'view_profile' %}">View Company Profile</a> |
+      <a href="{% url 'post_job' %}">Post New Job</a> |
+      <a href="{% url 'edit_profile' %}">Update Contact Email</a> |
+      <a href="{% url 'job_list' %}">View All Jobs</a>
+    </p>
+
+    <hr />
+
+    <h2>My Posted Jobs</h2>
+    {% if my_jobs %} {% for job in my_jobs %}
+    <div style="border: 1px solid #ccc; padding: 15px; margin: 10px 0">
+      <strong
+        ><a href="{% url 'job_detail' job.id %}">{{ job.title }}</a></strong
+      ><br />
+      {{ job.get_job_type_display }} | {{ job.location }}<br />
+      <a href="{% url 'job_applicants' job.id %}"
+        >View Applicants ({{ job.application_set.count }})</a
+      >
+    </div>
+    {% endfor %} {% else %}
+    <p>You haven't posted any jobs yet.</p>
+    {% endif %}
+  </body>
+</html>
