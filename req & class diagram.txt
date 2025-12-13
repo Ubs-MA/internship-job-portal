@@ -8,33 +8,41 @@ tzdata==2025.2
 
 
 User
-├── id
-├── username
-├── password
-└── profile → Profile (OneToOne)
+- id
+- username
+- password
+- email
++ profile: Profile
 
 Profile
-├── user (FK)
-├── role (student/company)
-├── email (EmailField, optional)
-├── university (optional)
-├── skills (optional)
-└── cv (FileField, optional)
+- user: User
+- role
+- email
+- university
+- skills
+- cv
++ __str__()
++ get_role_display()
++ has_cv()
 
 JobPosting
-├── id
-├── company → User (FK)
-├── title
-├── description
-├── location
-├── job_type
-└── created_at
+- id
+- company: User
+- title
+- description
+- location
+- job_type
+- created_at
++ __str__()
++ get_job_type_display()
++ get_applicant_count()
 
 Application
-├── id
-├── student → User (FK)
-├── job → JobPosting (FK)
-└── applied_at
+- id
+- student: User
+- job: JobPosting
+- applied_at
++ __str__()
 
 
 
