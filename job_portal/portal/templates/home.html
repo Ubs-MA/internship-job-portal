@@ -1,29 +1,63 @@
+{% load static %}
 <!DOCTYPE html>
-<html>
-<head><title>Home</title></head>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home | Internship & Job Portal</title>
+    <link rel="stylesheet" href="{% static 'portal/home.css' %}" />
+</head>
 <body>
-    <h1>Welcome to Internship & Job Portal</h1>
+    <nav class="navbar">
+        <div class="nav-logo">Job<span>Portal</span></div>
+        <div class="nav-links">
+            {% if user.is_authenticated %}
+                <a href="{% url 'job_list' %}">Browse Jobs</a>
+                <a href="{% url 'dashboard' %}" class="nav-btn-secondary">Dashboard</a>
+                <form style="display:inline;" method="post" action="{% url 'logout' %}">
+                    {% csrf_token %}
+                    <button type="submit" class="logout-link">Logout</button>
+                </form>
+            {% else %}
+                <a href="{% url 'login' %}">Login</a>
+                <a href="{% url 'signup' %}" class="nav-btn">Get Started</a>
+            {% endif %}
+        </div>
+    </nav>
 
-    {% if user.is_authenticated %}
-        <p>Hello, {{ user.username }}!
-            <form style="display:inline;" method="post" action="{% url 'logout' %}">
-                {% csrf_token %}
-                <button type="submit" style="background:none;border:none;color:blue;cursor:pointer;">Logout</button>
-            </form>
-        </p>
-
-        <p><a href="{% url 'dashboard' %}"><strong>My Dashboard</strong></a></p>
-
-        <p><a href="{% url 'view_profile' %}">My Profile</a> | 
-   <a href="{% url 'dashboard' %}"><strong>My Dashboard</strong></a></p>
-
-        {% if user.profile.role == 'company' %}
-            <p><a href="{% url 'post_job' %}"><strong>Post a New Job</strong></a></p>
-        {% endif %}
-
-        <p><a href="{% url 'job_list' %}">Browse All Jobs</a></p>
-    {% else %}
-        <p><a href="{% url 'login' %}">Login</a> | <a href="{% url 'signup' %}">Sign Up</a></p>
-    {% endif %}
+    <main class="hero-container">
+        <div class="hero-content">
+            {% if user.is_authenticated %}
+                <span class="badge">Welcome back, {{ user.username }}!</span>
+                <h1>Find your next <br><span class="highlight">Career Move</span></h1>
+                <p>Manage your applications, browse new opportunities, and connect with top companies.</p>
+                
+                <div class="action-grid">
+                    <a href="{% url 'view_profile' %}" class="card">
+                        <h3>My Profile</h3>
+                        <p>Keep your info up to date</p>
+                    </a>
+                    <a href="{% url 'dashboard' %}" class="card highlight-card">
+                        <h3>My Dashboard</h3>
+                        <p>Track your progress</p>
+                    </a>
+                    {% if user.profile.role == 'company' %}
+                        <a href="{% url 'post_job' %}" class="card company-card">
+                            <h3>Post a Job</h3>
+                            <p>Hire top talent today</p>
+                        </a>
+                    {% endif %}
+                </div>
+            {% else %}
+                <span class="badge">Open Opportunities Await</span>
+                <h1>Internships & Jobs <br>for <span class="highlight">Next-Gen Talent</span></h1>
+                <p>The all-in-one portal to launch your career or find the perfect hire for your team.</p>
+                <div class="cta-group">
+                    <a href="{% url 'signup' %}" class="submit-btn">Join Now</a>
+                    <a href="{% url 'job_list' %}" class="secondary-btn">Browse Jobs</a>
+                </div>
+            {% endif %}
+        </div>
+    </main>
 </body>
 </html>

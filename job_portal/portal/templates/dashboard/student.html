@@ -1,35 +1,59 @@
+{% load static %}
 <!DOCTYPE html>
-<html>
-  <head>
-    <title>Student Dashboard</title>
-  </head>
-  <body>
-    <h1>Student Dashboard - {{ user.username }}</h1>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard | {{ user.username }}</title>
+    <link rel="stylesheet" href="{% static 'portal/student.css' %}" />
+</head>
+<body>
+    <div class="dashboard-container">
+        <header class="dashboard-header">
+            <div class="user-meta">
+                <h1>Student Dashboard</h1>
+                <p>Welcome back, <strong>{{ user.username }}</strong></p>
+            </div>
+            <div class="quick-actions">
+                <a href="{% url 'view_profile' %}" class="action-link">View Profile</a>
+                <a href="{% url 'edit_profile' %}" class="action-link">Edit Profile</a>
+                <a href="{% url 'job_list' %}" class="primary-action">Browse New Jobs</a>
+                <a href="{% url 'home' %}" class="home-link">Home</a>
+            </div>
+        </header>
 
-    <p>
-      <a href="{% url 'edit_profile' %}">Edit Profile & Upload CV</a> |
-      <a href="{% url 'job_list' %}">Browse Jobs</a> |
-      <a href="{% url 'home' %}">Home</a>
-    </p>
+        <section class="main-content">
+            <div class="section-title">
+                <h2>My Applications</h2>
+                <span class="count-badge">{{ applications|length }} Total</span>
+            </div>
 
-    <hr />
-    
-    <p>
-      <a href="{% url 'view_profile' %}">View My Profile</a> |
-      <a href="{% url 'edit_profile' %}">Edit Profile & Upload CV</a> |
-      <a href="{% url 'job_list' %}">Browse Jobs</a>
-    </p>
-
-    <hr />
-
-    <h2>My Applications</h2>
-    {% if applications %} {% for app in applications %}
-    <div style="border: 1px solid #ccc; padding: 15px; margin: 10px 0">
-      <strong>{{ app.job.title }}</strong> at {{ app.job.company.username }}<br />
-      Applied on: {{ app.applied_at|date:"d M Y" }}
+            <div class="application-feed">
+                {% if applications %}
+                    {% for app in applications %}
+                        <div class="app-card">
+                            <div class="app-info">
+                                <h3>{{ app.job.title }}</h3>
+                                <p class="company-name">{{ app.job.company.username }}</p>
+                            </div>
+                            <div class="app-meta">
+                                <span class="date-label">Applied on</span>
+                                <span class="date-value">{{ app.applied_at|date:"d M Y" }}</span>
+                            </div>
+                            <div class="status-indicator">
+                                <span class="status-dot"></span>
+                                Submitted
+                            </div>
+                        </div>
+                    {% endfor %}
+                {% else %}
+                    <div class="empty-state">
+                        <p>You haven't applied to any jobs yet.</p>
+                        <a href="{% url 'job_list' %}">Explore available opportunities</a>
+                    </div>
+                {% endif %}
+            </div>
+        </section>
     </div>
-    {% endfor %} {% else %}
-    <p>You haven't applied to any jobs yet.</p>
-    {% endif %}
-  </body>
+</body>
 </html>

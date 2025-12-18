@@ -1,41 +1,73 @@
+{% load static %}
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>My Profile - {{ user.username }}</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Profile | {{ user.username }}</title>
+    <link rel="stylesheet" href="{% static 'portal/view.css' %}" />
 </head>
 <body>
-    <h1>My Profile</h1>
-    
-    <p><strong>Username:</strong> {{ user.username }}</p>
-    
-    {% if profile.email %}
-        <p><strong>Email:</strong> {{ profile.email }}</p>
-    {% else %}
-        <p><strong>Email:</strong> Not provided (optional)</p>
-    {% endif %}
-    
-    <p><strong>Role:</strong> {{ profile.get_role_display }}</p>
-    
-    {% if user.profile.role == 'student' %}
-        <p><strong>University:</strong> {{ profile.university|default:"Not set" }}</p>
-        <p><strong>Skills:</strong> {{ profile.skills|default:"Not set"|linebreaks }}</p>
-        
-        {% if profile.cv %}
-            <p><strong>CV:</strong> <a href="{{ profile.cv.url }}" target="_blank">Download CV</a></p>
-        {% else %}
-            <p><strong>CV:</strong> Not uploaded yet</p>
-        {% endif %}
-        
-        <hr>
-        <a href="{% url 'edit_profile' %}"><strong>Edit Profile & Upload CV</strong></a>
-    {% else %}
-        <p><em>Company profiles are managed via your account settings.</em></p>
-        <hr>
-        <a href="{% url 'edit_profile' %}"><strong>Update Contact Email</strong></a>
-    {% endif %}
-    
-    <hr>
-    <a href="{% url 'dashboard' %}">← Back to Dashboard</a> | 
-    <a href="{% url 'home' %}">Home</a>
+    <div class="container">
+        <div class="profile-header">
+            <div class="avatar-circle">
+                {{ user.username|slice:":1"|upper }}
+            </div>
+            <h1>{{ user.username }}</h1>
+            <span class="role-badge">{{ profile.get_role_display }}</span>
+        </div>
+
+        <div class="info-grid">
+            <div class="info-section">
+                <label>Email Address</label>
+                <p>{{ profile.email|default:"Not provided (optional)" }}</p>
+            </div>
+
+            {% if user.profile.role == 'student' %}
+                <div class="info-section">
+                    <label>University</label>
+                    <p>{{ profile.university|default:"Not set" }}</p>
+                </div>
+
+                <div class="info-section full-width">
+                    <label>Skills</label>
+                    <div class="skills-container">
+                        {% if profile.skills %}
+                            {{ profile.skills|linebreaks }}
+                        {% else %}
+                            <p class="muted">No skills listed yet.</p>
+                        {% endif %}
+                    </div>
+                </div>
+
+                <div class="info-section">
+                    <label>Resume / CV</label>
+                    {% if profile.cv %}
+                        <a href="{{ profile.cv.url }}" target="_blank" class="cv-link">
+                            <span class="icon">📄</span> Download Current CV
+                        </a>
+                    {% else %}
+                        <p class="muted">No CV uploaded yet</p>
+                    {% endif %}
+                </div>
+            {% else %}
+                <div class="company-notice">
+                    <p>Company profiles are managed via your account settings.</p>
+                </div>
+            {% endif %}
+        </div>
+
+        <div class="profile-footer">
+            <a href="{% url 'edit_profile' %}" class="submit-btn">
+                {% if user.profile.role == 'student' %}Edit Profile & CV{% else %}Update Email{% endif %}
+            </a>
+            
+            <div class="nav-links">
+                <a href="{% url 'dashboard' %}">← Dashboard</a>
+                <span class="sep">|</span>
+                <a href="{% url 'home' %}">Home</a>
+            </div>
+        </div>
+    </div>
 </body>
 </html>
