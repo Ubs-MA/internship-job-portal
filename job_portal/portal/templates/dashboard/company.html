@@ -1,41 +1,51 @@
+{% load static %}
 <!DOCTYPE html>
-<html>
-  <head>
-    <title>Company Dashboard</title>
-  </head>
-  <body>
-    <h1>Company Dashboard - {{ user.username }}</h1>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Company Dashboard | {{ user.username }}</title>
+    <link rel="stylesheet" href="{% static 'portal/company.css' %}" />
+</head>
+<body>
+    <div class="dashboard-container">
+        <header class="dashboard-header">
+            <div class="user-meta">
+                <h1>Company Dashboard</h1>
+                <p>Welcome back, <strong>{{ user.username }}</strong></p>
+            </div>
+            <div class="quick-actions">
+                <a href="{% url 'post_job' %}" class="primary-action">Post New Job</a>
+                <a href="{% url 'job_list' %}" class="action-link">View All Jobs</a>
+                <a href="{% url 'home' %}" class="home-link">Home</a>
+            </div>
+        </header>
 
-    <p>
-      <a href="{% url 'post_job' %}">Post New Job</a> |
-      <a href="{% url 'job_list' %}">View All Jobs</a> |
-      <a href="{% url 'home' %}">Home</a>
-    </p>
-
-    <hr />
-    
-    <p>
-      <a href="{% url 'view_profile' %}">View Company Profile</a> |
-      <a href="{% url 'post_job' %}">Post New Job</a> |
-      <a href="{% url 'edit_profile' %}">Update Contact Email</a> |
-      <a href="{% url 'job_list' %}">View All Jobs</a>
-    </p>
-
-    <hr />
-
-    <h2>My Posted Jobs</h2>
-    {% if my_jobs %} {% for job in my_jobs %}
-    <div style="border: 1px solid #ccc; padding: 15px; margin: 10px 0">
-      <strong
-        ><a href="{% url 'job_detail' job.id %}">{{ job.title }}</a></strong
-      ><br />
-      {{ job.get_job_type_display }} | {{ job.location }}<br />
-      <a href="{% url 'job_applicants' job.id %}"
-        >View Applicants ({{ job.application_set.count }})</a
-      >
+        <section class="main-content">
+            <h2>My Posted Jobs</h2>
+            <div class="job-feed">
+                {% if my_jobs %}
+                    {% for job in my_jobs %}
+                        <div class="job-card">
+                            <div class="job-info">
+                                <h3><a href="{% url 'job_detail' job.id %}">{{ job.title }}</a></h3>
+                                <p>{{ job.get_job_type_display }} | {{ job.location }}</p>
+                            </div>
+                            <div class="job-meta">
+                                <a href="{% url 'job_applicants' job.id %}" class="view-applicants">
+                                    View Applicants ({{ job.application_set.count }})
+                                </a>
+                            </div>
+                        </div>
+                    {% endfor %}
+                {% else %}
+                    <div class="empty-state">
+                        <p>You haven't posted any jobs yet.</p>
+                        <a href="{% url 'post_job' %}" class="primary-action">Post Your First Job</a>
+                    </div>
+                {% endif %}
+            </div>
+        </section>
     </div>
-    {% endfor %} {% else %}
-    <p>You haven't posted any jobs yet.</p>
-    {% endif %}
-  </body>
+</body>
 </html>

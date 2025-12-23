@@ -1,25 +1,44 @@
+{% load static %}
 <!DOCTYPE html>
-<html>
-<head><title>Applicants for {{ job.title }}</title></head>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Applicants for {{ job.title }}</title>
+    <link rel="stylesheet" href="{% static 'portal/applicants.css' %}" />
+</head>
 <body>
-    <h1>Applicants for: {{ job.title }}</h1>
-    <p><a href="{% url 'dashboard' %}">← Back to Dashboard</a></p>
-    <hr>
-
-    {% if applicants %}
-        {% for app in applicants %}
-            <div style="border:1px solid #aaa; padding:15px; margin:10px 0; background:#f9f9f9;">
-                <strong>Student:</strong> {{ app.student.username }}<br>
-                <strong>Applied on:</strong> {{ app.applied_at|date:"d M Y" }}<br>
-                {% if app.student.profile.cv %}
-                    <a href="{{ app.student.profile.cv.url }}" target="_blank">Download CV</a>
-                {% else %}
-                    <em>No CV uploaded</em>
-                {% endif %}
+    <div class="dashboard-container">
+        <header class="dashboard-header">
+            <div class="user-meta">
+                <h1>Applicants for: {{ job.title }}</h1>
             </div>
-        {% endfor %}
-    {% else %}
-        <p>No applicants yet.</p>
-    {% endif %}
+            <div class="quick-actions">
+                <a href="{% url 'dashboard' %}" class="action-link">← Back to Dashboard</a>
+            </div>
+        </header>
+
+        <section class="main-content">
+            {% if applicants %}
+                <div class="applicant-feed">
+                    {% for app in applicants %}
+                        <div class="applicant-card">
+                            <p><strong>Student:</strong> {{ app.student.username }}</p>
+                            <p><strong>Applied on:</strong> {{ app.applied_at|date:"d M Y" }}</p>
+                            {% if app.student.profile.cv %}
+                                <a href="{{ app.student.profile.cv.url }}" target="_blank" class="primary-action">Download CV</a>
+                            {% else %}
+                                <em>No CV uploaded</em>
+                            {% endif %}
+                        </div>
+                    {% endfor %}
+                </div>
+            {% else %}
+                <div class="empty-state">
+                    <p>No applicants yet.</p>
+                </div>
+            {% endif %}
+        </section>
+    </div>
 </body>
 </html>

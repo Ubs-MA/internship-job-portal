@@ -1,27 +1,39 @@
+{% load static %}
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Job Listings</title>
+    <link rel="stylesheet" href="{% static 'portal/list.css' %}" />
 </head>
 <body>
-    <h1>Available Jobs & Internships</h1>
-    
-    <p><a href="{% url 'home' %}">← Back to Home</a></p>
-    <hr>
+    <div class="dashboard-container">
+        <header class="dashboard-header">
+            <h1>Available Jobs & Internships</h1>
+            <a href="{% url 'home' %}" class="action-link">← Back to Home</a>
+        </header>
 
-    {% if jobs %}
-        {% for job in jobs %}
-            <div style="border: 1px solid #ccc; padding: 15px; margin: 15px 0; border-radius: 8px;">
-                <h2><a href="{% url 'job_detail' job.id %}">{{ job.title }}</a></h2>
-                <p><strong>Company:</strong> {{ job.company.username }}</p>
-                <p><strong>Type:</strong> {{ job.get_job_type_display }}</p>
-                <p><strong>Location:</strong> {{ job.location }}</p>
-                <p>{{ job.description|truncatewords:50 }}</p>
-                <small>Posted on: {{ job.created_at|date:"d M Y" }}</small>
-            </div>
-        {% endfor %}
-    {% else %}
-        <p>No jobs available yet. Be the first company to post one!</p>
-    {% endif %}
+        <section class="main-content">
+            {% if jobs %}
+                <div class="job-feed">
+                    {% for job in jobs %}
+                        <div class="job-card">
+                            <h3><a href="{% url 'job_detail' job.id %}">{{ job.title }}</a></h3>
+                            <p><strong>Company:</strong> {{ job.company.username }}</p>
+                            <p><strong>Type:</strong> {{ job.get_job_type_display }}</p>
+                            <p><strong>Location:</strong> {{ job.location }}</p>
+                            <p>{{ job.description|truncatewords:50 }}</p>
+                            <small>Posted on: {{ job.created_at|date:"d M Y" }}</small>
+                        </div>
+                    {% endfor %}
+                </div>
+            {% else %}
+                <div class="empty-state">
+                    <p>No jobs available yet. Be the first company to post one!</p>
+                </div>
+            {% endif %}
+        </section>
+    </div>
 </body>
 </html>

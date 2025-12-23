@@ -1,0 +1,58 @@
+:root {
+    --bg-dark: #0f172a;
+    --card-bg: #1e293b;
+    --primary-emerald: #10b981;
+    --text-main: #f8fafc;
+    --text-dim: #94a3b8;
+    --border-color: #334155;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+    font-family: 'Inter', sans-serif;
+    background-color: var(--bg-dark);
+    color: var(--text-main);
+    padding: 40px 5%;
+}
+
+.dashboard-container { max-width: 1000px; margin: 0 auto; }
+
+.dashboard-header { display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 30px; }
+
+.user-meta h1 { font-size: 28px; }
+
+.action-link { color: var(--text-dim); text-decoration: none; font-weight: 500; }
+
+.main-content { display: flex; flex-direction: column; gap: 15px; }
+
+.applicant-card {
+    background: var(--card-bg);
+    border: 1px solid var(--border-color);
+    padding: 20px;
+    border-radius: 16px;
+    transition: all 0.3s ease;
+}
+
+.applicant-card:hover {
+    border-color: var(--primary-emerald);
+    transform: scale(1.01);
+}
+
+.applicant-card a.primary-action {
+    display: inline-block;
+    margin-top: 10px;
+    padding: 6px 12px;
+    background: var(--primary-emerald);
+    color: var(--bg-dark);
+    text-decoration: none;
+    border-radius: 8px;
+}
+
+.empty-state {
+    text-align: center;
+    padding: 40px;
+    border: 2px dashed var(--border-color);
+    border-radius: 16px;
+    color: var(--text-dim);
+}
